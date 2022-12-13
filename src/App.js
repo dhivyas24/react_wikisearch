@@ -1,9 +1,8 @@
 import { useState } from "react";
-
+import "./styles.css";
 function App() {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
-  const [searchInfo, setSearchInfo] = useState({});
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -20,13 +19,12 @@ function App() {
     const json = await response.json();
 
     setResults(json.query.search);
-    setSearchInfo(json.query.searchinfo);
   };
 
   return (
     <div className="App">
       <header>
-        <h1>Wiki Search</h1>
+        <h1 className="Heading">Wiki Search</h1>
         <form className="search-box" onSubmit={handleSearch}>
           <input
             type="search"
@@ -39,10 +37,17 @@ function App() {
       <div className="results">
         {results.map((result, i) => {
           const url = `https://en.wikipedia.org/?curid=${result.pageid}`;
-
+          var key = i % 2;
+          var a;
+          if (key !== 0) {
+            a = "odd";
+          } else {
+            a = "even";
+          }
+          console.log(key);
           return (
-            <div className="result" key={i}>
-              <h3>{result.title}</h3>
+            <div key={i} className={a}>
+              <a href={url}>{result.title}</a>
             </div>
           );
         })}
